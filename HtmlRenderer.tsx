@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useCallback, memo } from 'react';
+import React, { useState, useRef, useCallback, memo, useEffect } from 'react';
 import {
   useWindowDimensions,
   FlatList,
@@ -8,101 +8,165 @@ import {
   Image,
   View,
   ActivityIndicator,
-  NativeModules
+  NativeModules,
+  TouchableOpacity
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 
 const { PostsFetcher } = NativeModules;
 
+type AuthorParams = {
+  avatar_template: string;
+  name?: string;
+  username: string;
+};
 
-function HtmlRenderer({ sources, baseDomain }): React.JSX.Element {
+type PostAuthorProps = {
+  author_params: AuthorParams;
+};
+
+type PostItemViewProps = {
+  each_post: any;
+};
+
+
+function HtmlRenderer({ baseDomain, topicId, postNumber }): React.JSX.Element {
   const { width } = useWindowDimensions();
-  const jsonData = JSON.parse(sources);
-  const postStream = jsonData.post_stream;
-  const topicTitle = jsonData.title;
-  const topicId = jsonData.id;
-  const postsCount = jsonData.posts_count;
-  const stream = postStream.stream; // Contains the list of all post IDs in the topic
-  const chunkSize = jsonData.chunk_size || 20;
+  const chunkSize = 20;
+
+  // Loading states
+  const [isLoadingInitial, setIsLoadingInitial] = useState(false);
+  const [isLoadingPrev, setIsLoadingPrev] = useState(false);
+  const [isLoadingNext, setIsLoadingNext] = useState(false);
+
 
   // Maintain State in variables
-  const [posts, setPosts] = useState(postStream.posts);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(postStream.posts.length < stream.length);
+  const [posts, setPosts] = useState<any[]>([]);
+  const [metadata, setMetadata] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
+  const [hasPrev, setHasPrev] = useState(!!postNumber); // true if postNumber is provided, assuming we are loading from the middle
+  const [hasNext, setHasNext] = useState(true);
 
-  // Track loaded post IDs so far
-  const loadedPostIds = useRef(new Set(posts.map(p => p.id)));
+  // Track present range of post numbers to enable pagination
+  const firstPostNumber = useRef<number | null>(null);
+  const lastPostNumber = useRef<number | null>(null);
 
-  // Helper to get the next chunk of postIDs
-  const getNextPostIds = useCallback(() => {
-    const loadedLength = posts.length;
-    return stream.slice(loadedLength, loadedLength + chunkSize).filter(id => !loadedPostIds.current.has(id));
-  }, [posts.length, stream, chunkSize]);
 
-  // Load more posts
-  const loadMore = useCallback(async () => {
-    if (isLoading || !hasMore) return;
-    const nextPostIds = getNextPostIds();
-    if (nextPostIds.length === 0) {
-      setHasMore(false);
-      return;
-    }
-    setIsLoading(true);
+  // Initial topic Load
+  const loadInitial = useCallback(async () => {
+    setIsLoadingInitial(true);
     setError(null);
-
+    // Load the first time, using `fetchWindow`
     try {
-      const response = await PostsFetcher.fetchPosts(baseDomain, topicId, nextPostIds);
-      const newPosts = response.post_stream.posts;
-      // Update the `posts` array in state to update in the ui as well
-      setPosts(prev => [...prev, ...newPosts]);
-      // Update the ref (doesnt help with UI changes) and not destryed with layout changes
-      newPosts.forEach(p => loadedPostIds.current.add(p.id));
-      // Update page number to possibly load the next ones.
-      setPageNumber(prev => prev + 1);
-      // Set in advance the list has ended to avoid additional computation
-      if (posts.length + newPosts.length >= stream.length) setHasMore(false);
+      const response = await PostsFetcher.fetchWindow(
+        String(baseDomain),
+        String(topicId),
+        postNumber != null ? String(postNumber) : null
+      );
+      setMetadata(response);
+      setPosts(response.post_stream.posts);
+      if (response.post_stream.posts.length > 0) {
+        firstPostNumber.current = response.post_stream.posts[0].post_number;
+        lastPostNumber.current = response.post_stream.posts[response.post_stream.posts.length - 1].post_number;
+      }
+      setHasPrev(!!postNumber);
+      setHasNext(true);
     } catch (e) {
-      console.error('PostsFetcher Error: ', e);
-      setError('Failed: ' + e);
+      setError('Failed to load posts.');
+      console.error('PostsFetcher error:', e);
     }
-    setIsLoading(false);
-  }, [isLoading, hasMore, error, getNextPostIds, topicId, posts.length, stream.length, baseDomain]);
+    setIsLoadingInitial(false);
+  }, [baseDomain, topicId, postNumber]);
+
+  // Initial topic load
+  useEffect(() => {
+    loadInitial();
+  }, [loadInitial]);
+
+  // Pagination: load next
+  const loadNext = useCallback(async () => {
+    if (isLoadingNext || !hasNext || !lastPostNumber.current) return;
+    setIsLoadingNext(true);
+    setError(null);
+    try {
+      const response = await PostsFetcher.fetchNext(
+        String(baseDomain),
+        String(topicId),
+        String(lastPostNumber.current)
+      );
+      const newPosts = response.post_stream.posts;
+      if (newPosts.length === 0) setHasNext(false);
+      else {
+        setPosts(prev => {
+          const existingIds = new Set(prev.map(p => p.id));
+          const filtered = newPosts.filter(p => !existingIds.has(p.id));
+          return [...prev, ...filtered];
+        });
+        lastPostNumber.current = newPosts[newPosts.length - 1].post_number;
+      }
+    } catch (e) {
+      setError('Failed to load next posts.');
+      console.error('PostsFetcher error:', e);
+    }
+    setIsLoadingNext(false);
+  }, [isLoadingNext, hasNext, baseDomain, topicId]);
+
+  // Pagination: load prev
+  const loadPrev = useCallback(async () => {
+    if (isLoadingPrev || !hasPrev || !firstPostNumber.current) return;
+    setIsLoadingPrev(true);
+    setError(null);
+    try {
+      const response = await PostsFetcher.fetchPrev(
+        String(baseDomain),
+        String(topicId),
+        String(firstPostNumber.current)
+      );
+      const newPosts = response.post_stream.posts;
+      if (newPosts.length === 0) setHasPrev(false);
+      // TODO: Reverse `newPosts` before inserting in front of the current list
+      else {
+        setPosts(prev => {
+          const existingIds = new Set(prev.map(p => p.id));
+          const filtered = newPosts.filter(p => !existingIds.has(p.id));
+          return [...filtered, ...prev];
+        });
+        firstPostNumber.current = newPosts[newPosts.length - 1].post_number;
+      }
+    } catch (e) {
+      setError('Failed to load previous posts.');
+      console.error('PostsFetcher error:', e);
+    }
+    setIsLoadingPrev(false);
+  }, [isLoadingPrev, hasPrev, baseDomain, topicId]);
+
+
+  // End reached handler
+  const handleEndReached = () => {
+    if (!isLoadingNext && !error && hasNext) {
+      loadNext();
+    }
+  }
+
+  // Beginning reached handler (triggered using onScroll)
+  const isHandlingBeginning = useRef(false);
+  const handleScroll = useCallback((event) => {
+    // Get the current Y offset
+    const offsetY = event.nativeEvent.contentOffset.y;
+    // If completely scrolled to the beginning 
+    if (offsetY <= 0 && hasPrev && !isLoadingPrev && !isHandlingBeginning.current) {
+      isHandlingBeginning.current = true;
+      loadPrev().finally(() => {
+        isHandlingBeginning.current = false;
+      });
+    }
+  }, [hasPrev, isLoadingPrev, loadPrev]);
 
   // Retry handler
-  const handleRetry = () => {
-    setError(null);
-    loadMore();
-  };
-
-  const handleEndReached = () => {
-    if (!isLoading && !error) {
-      loadMore();
-    }
-  }
-
-  const PageFooter = () => {
-    if (isLoading) {
-      return (
-        <View style={{ padding: 30 }}>
-          <ActivityIndicator size="large" />
-        </View>
-      )
-    }
-    if (error) {
-      return (
-        <View style={{ padding: 30, alignItems: 'center' }}>
-          <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text>
-          <Text style={{ color: 'blue' }} onPress={handleRetry}>Retry</Text>
-        </View>
-      )
-    }
-    if (!hasMore) {
-      return <View style={{ height: 60 }} />;
-    }
-    return null;
-  }
+  // const handleRetry = () => {
+  //   setError(null);
+  //   loadMore();
+  // };
 
   const TopicHeading = ({ heading_params }) => {
     // topic_title: string, post_count: number
@@ -141,16 +205,6 @@ function HtmlRenderer({ sources, baseDomain }): React.JSX.Element {
     )
   });
 
-
-
-  // const TopicPost = ({postContent}) => {
-  //   return (
-  //     <View style={{ padding: 20 }}>
-  //       <Text>{postContent}</Text>
-  //     </View>
-  //   )
-  // }
-
   const PostItemView = memo(({ each_post }: PostItemViewProps) => {
     return (
       <View>
@@ -178,9 +232,66 @@ function HtmlRenderer({ sources, baseDomain }): React.JSX.Element {
 
   const keyExtractor = useCallback(postItem => String(postItem.id), []);
 
+
+  const PageFooter = () => {
+    if (isLoadingNext) {
+      return (
+        <View style={{ padding: 30 }}>
+          <ActivityIndicator size="large" />
+        </View>
+      )
+    }
+    if (error && !isLoadingInitial) {
+      return (
+        <View style={{ padding: 30, alignItems: 'center' }}>
+          <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text>
+          <TouchableOpacity onPress={loadNext}>
+            <Text style={{ color: 'blue' }}>Retry</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+    if (!hasNext) {
+      return <View style={{ height: 60 }} />;
+    }
+    return null;
+  }
+
+  // Initial load error/retry UI
+  if (isLoadingInitial || !metadata) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (error && !posts.length) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text style={{ color: 'red', marginBottom: 10 }}>{error}</Text>
+        <TouchableOpacity onPress={loadInitial}>
+          <Text style={{ color: 'blue' }}>Retry</Text>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  if (metadata && (!posts || posts.length === 0)) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <Text>No posts found.</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={{ width: width }}>
-      <TopicHeading heading_params={{ topic_title: topicTitle, post_count: postsCount }} />
+      <TopicHeading
+        heading_params={{
+          topic_title: metadata.fancy_title || metadata.title || "No title",
+          post_count: metadata.posts_count || "Unknown"
+        }} />
       <FlatList
         data={posts}
         renderItem={renderPostItem}
@@ -196,27 +307,15 @@ function HtmlRenderer({ sources, baseDomain }): React.JSX.Element {
         initialNumToRender={10}
         maxToRenderPerBatch={10}
         windowSize={7}
-        removeClippedSubviewstrue
+        removeClippedSubviews={true}
+        // refreshing={isLoadingInitial || isLoadingPrev || isLoadingNext}
+        // onRefresh={handleRefresh}
+        onScroll={handleScroll}
+        scrollEventThrottle={16}
       />
     </View>
   )
 }
-
-
-type AuthorParams = {
-  avatar_template: string;
-  name?: string;
-  username: string;
-};
-
-type PostAuthorProps = {
-  author_params: AuthorParams;
-};
-
-type PostItemViewProps = {
-  each_post: any;
-};
-
 
 const styles = StyleSheet.create({
   authorContainer: {

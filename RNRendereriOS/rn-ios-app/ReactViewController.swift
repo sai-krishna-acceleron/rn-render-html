@@ -26,7 +26,8 @@ class ReactViewController: UIViewController {
         reactNativeFactory = RCTReactNativeFactory(delegate: reactNativeFactoryDelegate!)
         
         if let topicData = pickRandomTopic(), let site = topicData["site"], let topicId = topicData["topicId"] {
-            loadData(site: site, topicId: topicId)
+            let postNumber = topicData["postNumber"] ?? nil
+            renderReactView(baseDomain: site, topicId: topicId, postNumber: postNumber)
         } else {
             NSLog("ERROR!!! Invalid data found. Cannot load RN view")
         }
@@ -47,20 +48,14 @@ class ReactViewController: UIViewController {
         return dict
     }
     
-    private func loadData(site: String, topicId: String) {
-        Task {
-            let sources = await fetchTopic(site: site, topicId: topicId)
-            await MainActor.run {
-                self.renderReactView(with: sources, baseDomain: site)
-            }
-        }
-    }
-    
-    private func renderReactView(with sources: String?, baseDomain: String) {
-        let initialProps: [String: Any] = [
-            "sources": sources ?? "",
+    private func renderReactView(baseDomain: String, topicId: String, postNumber: String? = nil) {
+        var initialProps: [String: Any] = [
             "baseDomain": baseDomain,
+            "topicId": topicId,
         ]
+        if let postNumber = postNumber {
+            initialProps["postNumber"] = postNumber
+        }
         let rootView = reactNativeFactory!.rootViewFactory.view(
             withModuleName: ReactViewController.COMPONENT_NAME,
             initialProperties: initialProps
@@ -76,19 +71,6 @@ class ReactViewController: UIViewController {
                 equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
-    
-    private func fetchTopic(site: String, topicId: String) async -> String? {
-        guard let url = URL(string: "\(site)/t/\(topicId).json")
-        else { return nil }
-        do {
-            let (data, _) = try await URLSession.shared.data(from: url)
-            return String(data: data, encoding: .utf8)
-        } catch {
-            print("API error: \(error.localizedDescription)")
-            return nil
-        }
-    }
-    
 }
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
