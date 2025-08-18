@@ -6,51 +6,62 @@
 //
 
 import Foundation
-import UIKit
 import React
-import React_RCTAppDelegate
 import ReactAppDependencyProvider
-
-
+import React_RCTAppDelegate
+import UIKit
 
 class ReactViewController: UIViewController {
     
     var reactNativeFactory: RCTReactNativeFactory?
     var reactNativeFactoryDelegate: RCTReactNativeFactoryDelegate?
     
-    static let TOPIC_ID = "34686"
     static let COMPONENT_NAME = "RNRenderHTML"
-    static let API_BASE_URL = "https://meta.discourse.org"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         reactNativeFactoryDelegate = ReactNativeDelegate()
         reactNativeFactoryDelegate!.dependencyProvider = RCTAppDependencyProvider()
         reactNativeFactory = RCTReactNativeFactory(delegate: reactNativeFactoryDelegate!)
-
-        loadData()
-
-        // self.view = reactNativeFactory!.rootViewFactory.view(withModuleName: ReactViewController.COMPONENT_NAME)
+        
+        if let topicData = pickRandomTopic(), let site = topicData["site"], let topicId = topicData["topicId"] {
+            loadData(site: site, topicId: topicId)
+        } else {
+            NSLog("ERROR!!! Invalid data found. Cannot load RN view")
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.view.backgroundColor = .white
     }
-
-    private func loadData() {
-      Task {
-        let sources = await fetchTopic()
-        await MainActor.run {
-          self.renderReactView(with: sources)
-        }
-      }
+    
+    private func pickRandomTopic() -> [String: String]? {
+        guard !DATA.isEmpty else { return nil }
+        let idx = Int.random(in: 0..<DATA.count)
+        let dict = DATA[idx]
+        let site = dict["site"] ?? ""
+        let topicId = dict["topicId"] ?? ""
+        print("❗️[RANDOM POST PICKED] Index: \(idx), site: \(site), topicId: \(topicId)")
+        return dict
     }
-
-    private func renderReactView(with sources: String?) {
-      let initialProps: [String: Any] = ["sources": sources ?? ""]
-      let rootView = reactNativeFactory!.rootViewFactory.view(
+    
+    private func loadData(site: String, topicId: String) {
+        Task {
+            let sources = await fetchTopic(site: site, topicId: topicId)
+            await MainActor.run {
+                self.renderReactView(with: sources, baseDomain: site)
+            }
+        }
+    }
+    
+    private func renderReactView(with sources: String?, baseDomain: String) {
+        let initialProps: [String: Any] = [
+            "sources": sources ?? "",
+            "baseDomain": baseDomain,
+        ]
+        let rootView = reactNativeFactory!.rootViewFactory.view(
             withModuleName: ReactViewController.COMPONENT_NAME,
             initialProperties: initialProps
         )
@@ -59,13 +70,16 @@ class ReactViewController: UIViewController {
         NSLayoutConstraint.activate([
             rootView.safeAreaLayoutGuide.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             rootView.safeAreaLayoutGuide.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
-            rootView.safeAreaLayoutGuide.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor),
-            rootView.safeAreaLayoutGuide.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
+            rootView.safeAreaLayoutGuide.topAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.topAnchor),
+            rootView.safeAreaLayoutGuide.bottomAnchor.constraint(
+                equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
         ])
     }
-
-    private func fetchTopic() async -> String? {
-        guard let url = URL(string: "\(ReactViewController.API_BASE_URL)/t/\(ReactViewController.TOPIC_ID).json") else { return nil }
+    
+    private func fetchTopic(site: String, topicId: String) async -> String? {
+        guard let url = URL(string: "\(site)/t/\(topicId).json")
+        else { return nil }
         do {
             let (data, _) = try await URLSession.shared.data(from: url)
             return String(data: data, encoding: .utf8)
@@ -74,22 +88,22 @@ class ReactViewController: UIViewController {
             return nil
         }
     }
-
+    
 }
-
 
 class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
     override func sourceURL(for bridge: RCTBridge) -> URL? {
-      self.bundleURL()
+        self.bundleURL()
     }
-
+    
     override func bundleURL() -> URL? {
-      #if DEBUG
-      RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
-      #else
-      Bundle.main.url(forResource: "main", withExtension: "jsbundle")
-      #endif
+#if DEBUG
+        RCTBundleURLProvider.sharedSettings().jsBundleURL(forBundleRoot: "index")
+#else
+        Bundle.main.url(forResource: "main", withExtension: "jsbundle")
+#endif
     }
-
+    
 }
+
 
