@@ -2,6 +2,7 @@
 #import "RNRenderHTMLSpecs.h"
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
+#import "RCTDefaultReactNativeFactoryDelegate.h"
 
 // 2. IMPORTANT: Import the auto-generated Swift header.
 #import "rn_ios_app-Swift.h"
@@ -12,25 +13,25 @@
 @end
 
 @implementation PostsFetcher {
-  // 3. Keep an instance of your Swift class.
-  PostsFetcherImpl *swiftPostsFetcherImpl;
+    // 3. Keep an instance of your Swift class.
+    PostsFetcherImpl *swiftPostsFetcherImpl;
 }
 
 // This is the standard TurboModule entry point.
 // It creates and returns the JSI binding for the module.
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params {
-  return std::make_shared<facebook::react::NativePostsFetcherSpecJSI>(params);
+(const facebook::react::ObjCTurboModule::InitParams &)params {
+    return std::make_shared<facebook::react::NativePostsFetcherSpecJSI>(params);
 }
 
 // The initializer for this Objective-C++ class.
 - (instancetype)init {
-  self = [super init];
-  if (self) {
-    // 4. Create an instance of your Swift class when the module is initialized.
-    swiftPostsFetcherImpl = [[PostsFetcherImpl alloc] init];
-  }
-  return self;
+    self = [super init];
+    if (self) {
+        // 4. Create an instance of your Swift class when the module is initialized.
+        swiftPostsFetcherImpl = [[PostsFetcherImpl alloc] init];
+    }
+    return self;
 }
 
 #pragma mark - NativePostsFetcherSpec Methods
@@ -43,7 +44,7 @@
          postNumber:(NSString *)postNumber
             resolve:(RCTPromiseResolveBlock)resolve
              reject:(RCTPromiseRejectBlock)reject {
-  [swiftPostsFetcherImpl fetchWindow:baseUrl topicId:topicId postNumber:postNumber resolver:resolve rejecter:reject];
+    [swiftPostsFetcherImpl fetchWindow:baseUrl topicId:topicId postNumber:postNumber resolver:resolve rejecter:reject];
 }
 
 - (void)fetchNext:(NSString *)baseUrl
@@ -51,7 +52,7 @@
    lastPostNumber:(NSString *)lastPostNumber
           resolve:(RCTPromiseResolveBlock)resolve
            reject:(RCTPromiseRejectBlock)reject {
-  [swiftPostsFetcherImpl fetchNext:baseUrl topicId:topicId lastPostNumber:lastPostNumber resolver:resolve rejecter:reject];
+    [swiftPostsFetcherImpl fetchNext:baseUrl topicId:topicId lastPostNumber:lastPostNumber resolver:resolve rejecter:reject];
 }
 
 - (void)fetchPrev:(NSString *)baseUrl
@@ -59,23 +60,23 @@
   firstPostNumber:(NSString *)firstPostNumber
           resolve:(RCTPromiseResolveBlock)resolve
            reject:(RCTPromiseRejectBlock)reject {
-  [swiftPostsFetcherImpl fetchPrev:baseUrl topicId:topicId firstPostNumber:firstPostNumber resolver:resolve rejecter:reject];
+    [swiftPostsFetcherImpl fetchPrev:baseUrl topicId:topicId firstPostNumber:firstPostNumber resolver:resolve rejecter:reject];
 }
 
 // You still need to tell React Native the module name.
 // This must match the name from the JS spec.
 + (NSString *)moduleName {
-  return @"PostsFetcher";
+    return @"PostsFetcher";
 }
 
 // If your module doesn't send events, you can return an empty array.
 - (NSArray<NSString *> *)supportedEvents {
-  return @[];
+    return @[];
 }
 
 // This ensures the module is initialized on the main thread.
 + (BOOL)requiresMainQueueSetup {
-  return YES;
+    return YES;
 }
 
 @end

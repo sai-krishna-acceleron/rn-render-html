@@ -87,5 +87,3 @@ class ReactNativeDelegate: RCTDefaultReactNativeFactoryDelegate {
     }
     
 }
-
-

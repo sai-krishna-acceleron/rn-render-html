@@ -25,4 +25,4 @@ export interface Spec extends TurboModule {
 
 // Register the module with the name you'll use to call it from JS.
 // This MUST match the name in your native implementation.
-export default TurboModuleRegistry.getEnforcing<Spec>('PostsFetcher') as Spec;
+export default TurboModuleRegistry.getEnforcing<Spec>('PostsFetcher');
