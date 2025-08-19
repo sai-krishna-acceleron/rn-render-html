@@ -12,6 +12,11 @@
   "author": "",
   "license": "ISC",
   "description": "",
+  "codegenConfig": {
+    "name": "RNRenderHTMLSpecs",
+    "type": "all",
+    "jsSrcsDir": "./specs"
+  },
   "dependencies": {
     "react-native": "^0.80.0",
     "react-native-new-app-screen": "^1.0.1",

@@ -8,12 +8,11 @@ import {
   Image,
   View,
   ActivityIndicator,
-  NativeModules,
   TouchableOpacity
 } from 'react-native';
 import RenderHtml from 'react-native-render-html';
 
-const { PostsFetcher } = NativeModules;
+import PostsFetcher from './specs/NativePostsFetcher';
 
 type AuthorParams = {
   avatar_template: string;
