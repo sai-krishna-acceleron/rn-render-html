@@ -7,16 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9C512C17398B7E875F779FD1 /* libPods-rn-ios-app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E10491595B84724861F298B9 /* libPods-rn-ios-app.a */; };
+		78CCAE9A2568D95936F74F93 /* libPods-rn-ios-app.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4834C89D64A980251FF3CA2F /* libPods-rn-ios-app.a */; };
 		B8D6FF084BA92ACDB68C466E /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 685BF39D99D5C6157CEC3968 /* PrivacyInfo.xcprivacy */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1F5A53A2725D811C45E6F973 /* Pods-rn-ios-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rn-ios-app.debug.xcconfig"; path = "Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app.debug.xcconfig"; sourceTree = "<group>"; };
+		4834C89D64A980251FF3CA2F /* libPods-rn-ios-app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rn-ios-app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		685BF39D99D5C6157CEC3968 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		8B9007072E5191D900E7CFFD /* rn-ios-app.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "rn-ios-app.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E10491595B84724861F298B9 /* libPods-rn-ios-app.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-rn-ios-app.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		E6F5B71FAE22A034E2593968 /* Pods-rn-ios-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rn-ios-app.release.xcconfig"; path = "Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app.release.xcconfig"; sourceTree = "<group>"; };
+		B33256F630611582365CD39B /* Pods-rn-ios-app.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rn-ios-app.release.xcconfig"; path = "Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app.release.xcconfig"; sourceTree = "<group>"; };
+		D7D3BC27A5C75DE01EA2A103 /* Pods-rn-ios-app.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-rn-ios-app.debug.xcconfig"; path = "Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -45,7 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C512C17398B7E875F779FD1 /* libPods-rn-ios-app.a in Frameworks */,
+				78CCAE9A2568D95936F74F93 /* libPods-rn-ios-app.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,18 +55,10 @@
 		112891D4282B389BDBBE3E5B /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				1F5A53A2725D811C45E6F973 /* Pods-rn-ios-app.debug.xcconfig */,
-				E6F5B71FAE22A034E2593968 /* Pods-rn-ios-app.release.xcconfig */,
+				D7D3BC27A5C75DE01EA2A103 /* Pods-rn-ios-app.debug.xcconfig */,
+				B33256F630611582365CD39B /* Pods-rn-ios-app.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		48F76D6B9DBB2A2ADCA8F942 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				E10491595B84724861F298B9 /* libPods-rn-ios-app.a */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		8B9006CE2E51883A00E7CFFD = {
@@ -76,7 +68,7 @@
 				8B9006D82E51883A00E7CFFD /* Products */,
 				112891D4282B389BDBBE3E5B /* Pods */,
 				685BF39D99D5C6157CEC3968 /* PrivacyInfo.xcprivacy */,
-				48F76D6B9DBB2A2ADCA8F942 /* Frameworks */,
+				F21F217D2CD03CE10EDB1D00 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -88,6 +80,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F21F217D2CD03CE10EDB1D00 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4834C89D64A980251FF3CA2F /* libPods-rn-ios-app.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -95,12 +95,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8B90071B2E5191DA00E7CFFD /* Build configuration list for PBXNativeTarget "rn-ios-app" */;
 			buildPhases = (
-				7BF033C7A551CF75967BA11E /* [CP] Check Pods Manifest.lock */,
+				67822905C5E158C7BD349257 /* [CP] Check Pods Manifest.lock */,
 				8B9007032E5191D900E7CFFD /* Sources */,
 				8B9007042E5191D900E7CFFD /* Frameworks */,
 				8B9007052E5191D900E7CFFD /* Resources */,
-				8E7AE453EF8EDBA7D27E6E09 /* [CP] Embed Pods Frameworks */,
-				A41D1D3EC80252547461FBF1 /* [CP] Copy Pods Resources */,
+				EE438938EFBADA65B3E884AD /* [CP] Embed Pods Frameworks */,
+				65EF02EF7EBC96406D82D6D0 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -196,7 +196,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		7BF033C7A551CF75967BA11E /* [CP] Check Pods Manifest.lock */ = {
+		65EF02EF7EBC96406D82D6D0 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		67822905C5E158C7BD349257 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -218,7 +235,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		8E7AE453EF8EDBA7D27E6E09 /* [CP] Embed Pods Frameworks */ = {
+		EE438938EFBADA65B3E884AD /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -226,38 +243,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
-			outputPaths = (
-			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		A41D1D3EC80252547461FBF1 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-rn-ios-app/Pods-rn-ios-app-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -341,7 +333,10 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -411,7 +406,10 @@
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				OTHER_LDFLAGS = "$(inherited)  ";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					" ",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -422,7 +420,7 @@
 		};
 		8B9007182E5191DA00E7CFFD /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1F5A53A2725D811C45E6F973 /* Pods-rn-ios-app.debug.xcconfig */;
+			baseConfigurationReference = D7D3BC27A5C75DE01EA2A103 /* Pods-rn-ios-app.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -433,6 +431,79 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTDeprecation\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Fabric\"",
+					"\"${PODS_ROOT}/Headers/Public/React-FabricComponents\"",
+					"\"${PODS_ROOT}/Headers/Public/React-FabricImage\"",
+					"\"${PODS_ROOT}/Headers/Public/React-ImageManager\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Mapbuffer\"",
+					"\"${PODS_ROOT}/Headers/Public/React-NativeModulesApple\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAppDelegate\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTFBReactNativeSpec\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTFabric\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTRuntime\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeApple\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeCore\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeHermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-debug\"",
+					"\"${PODS_ROOT}/Headers/Public/React-defaultsnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-domnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-featureflags\"",
+					"\"${PODS_ROOT}/Headers/Public/React-featureflagsnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-graphics\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-idlecallbacksnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jserrorhandler\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspectorcdp\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspectornetwork\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspectortracing\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsitooling\"",
+					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-microtasksnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-oscompat\"",
+					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-performancetimeline\"",
+					"\"${PODS_ROOT}/Headers/Public/React-rendererconsistency\"",
+					"\"${PODS_ROOT}/Headers/Public/React-renderercss\"",
+					"\"${PODS_ROOT}/Headers/Public/React-rendererdebug\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimescheduler\"",
+					"\"${PODS_ROOT}/Headers/Public/React-timing\"",
+					"\"${PODS_ROOT}/Headers/Public/React-utils\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactAppDependencyProvider\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCodegen\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/boost\"",
+					"\"${PODS_ROOT}/Headers/Public/fast_float\"",
+					"\"${PODS_ROOT}/Headers/Public/fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(PODS_ROOT)/Headers/Private/Yoga\"",
+					"\"$(PODS_ROOT)/../build/generated/ios\"/**",
+				);
 				INFOPLIST_FILE = "rn-ios-app/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = RNIOS;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
@@ -463,7 +534,7 @@
 		};
 		8B9007192E5191DA00E7CFFD /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E6F5B71FAE22A034E2593968 /* Pods-rn-ios-app.release.xcconfig */;
+			baseConfigurationReference = B33256F630611582365CD39B /* Pods-rn-ios-app.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -474,6 +545,79 @@
 				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				EXCLUDED_ARCHS = "";
 				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"${PODS_ROOT}/Headers/Public\"",
+					"\"${PODS_ROOT}/Headers/Public/DoubleConversion\"",
+					"\"${PODS_ROOT}/Headers/Public/FBLazyVector\"",
+					"\"${PODS_ROOT}/Headers/Public/RCT-Folly\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTDeprecation\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTRequired\"",
+					"\"${PODS_ROOT}/Headers/Public/RCTTypeSafety\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Core\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Fabric\"",
+					"\"${PODS_ROOT}/Headers/Public/React-FabricComponents\"",
+					"\"${PODS_ROOT}/Headers/Public/React-FabricImage\"",
+					"\"${PODS_ROOT}/Headers/Public/React-ImageManager\"",
+					"\"${PODS_ROOT}/Headers/Public/React-Mapbuffer\"",
+					"\"${PODS_ROOT}/Headers/Public/React-NativeModulesApple\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAnimation\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTAppDelegate\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTBlob\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTFBReactNativeSpec\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTFabric\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTRuntime\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RCTText\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeApple\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeCore\"",
+					"\"${PODS_ROOT}/Headers/Public/React-RuntimeHermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-callinvoker\"",
+					"\"${PODS_ROOT}/Headers/Public/React-cxxreact\"",
+					"\"${PODS_ROOT}/Headers/Public/React-debug\"",
+					"\"${PODS_ROOT}/Headers/Public/React-defaultsnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-domnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-featureflags\"",
+					"\"${PODS_ROOT}/Headers/Public/React-featureflagsnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-graphics\"",
+					"\"${PODS_ROOT}/Headers/Public/React-hermes\"",
+					"\"${PODS_ROOT}/Headers/Public/React-idlecallbacksnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jserrorhandler\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsi\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsiexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspector\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspectorcdp\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspectornetwork\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsinspectortracing\"",
+					"\"${PODS_ROOT}/Headers/Public/React-jsitooling\"",
+					"\"${PODS_ROOT}/Headers/Public/React-logger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-microtasksnativemodule\"",
+					"\"${PODS_ROOT}/Headers/Public/React-oscompat\"",
+					"\"${PODS_ROOT}/Headers/Public/React-perflogger\"",
+					"\"${PODS_ROOT}/Headers/Public/React-performancetimeline\"",
+					"\"${PODS_ROOT}/Headers/Public/React-rendererconsistency\"",
+					"\"${PODS_ROOT}/Headers/Public/React-renderercss\"",
+					"\"${PODS_ROOT}/Headers/Public/React-rendererdebug\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimeexecutor\"",
+					"\"${PODS_ROOT}/Headers/Public/React-runtimescheduler\"",
+					"\"${PODS_ROOT}/Headers/Public/React-timing\"",
+					"\"${PODS_ROOT}/Headers/Public/React-utils\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactAppDependencyProvider\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCodegen\"",
+					"\"${PODS_ROOT}/Headers/Public/ReactCommon\"",
+					"\"${PODS_ROOT}/Headers/Public/SocketRocket\"",
+					"\"${PODS_ROOT}/Headers/Public/Yoga\"",
+					"\"${PODS_ROOT}/Headers/Public/boost\"",
+					"\"${PODS_ROOT}/Headers/Public/fast_float\"",
+					"\"${PODS_ROOT}/Headers/Public/fmt\"",
+					"\"${PODS_ROOT}/Headers/Public/glog\"",
+					"\"${PODS_ROOT}/Headers/Public/hermes-engine\"",
+					"\"$(PODS_ROOT)/DoubleConversion\"",
+					"\"$(PODS_ROOT)/boost\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(PODS_ROOT)/Headers/Private/React-Core\"",
+					"\"$(PODS_ROOT)/Headers/Private/Yoga\"",
+					"\"$(PODS_ROOT)/../build/generated/ios\"/**",
+				);
 				INFOPLIST_FILE = "rn-ios-app/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = RNIOS;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";

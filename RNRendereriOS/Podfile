@@ -1,5 +1,5 @@
 require_relative '../node_modules/react-native/scripts/react_native_pods.rb'
-#require_relative '../react-native-app/node_modules/@react-native-community/cli-platform-ios/native_modules'
+ENV['RCT_NEW_ARCH_ENABLED'] = '1'
 
 install! 'cocoapods', :deterministic_uuids => false
 
@@ -14,7 +14,7 @@ target 'rn-ios-app' do
   # config = use_native_modules!
   # use_react_native!(:path => config[:reactNativePath], hermes_enabled: true)
 
-  use_react_native!
+  use_react_native!(hermes_enabled: true)
 
   # Manually link the paths to the react native executables and the path to the react native app
 #  use_react_native!(path: '../react-native-app/node_modules/react-native', app_path: '../react-native-app', hermes_enabled: true)

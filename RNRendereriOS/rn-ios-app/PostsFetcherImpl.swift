@@ -8,10 +8,8 @@
 import Foundation
 import React
 
-@objc(PostsFetcher)
-class PostsFetcher: NSObject, RCTBridgeModule {
-    static func moduleName() -> String! { return "PostsFetcher" }
-    static func requiresMainQueueSetup() -> Bool { return false }
+@objc(PostsFetcherImpl)
+class PostsFetcherImpl: NSObject {
     
     // Windowed load for posts (initial load)
     @objc
@@ -64,7 +62,6 @@ class PostsFetcher: NSObject, RCTBridgeModule {
     
     
     // DEPRECATED: Legacy API
-    @objc
     func fetchPosts(
         _ baseUrl: String, topicId: NSNumber, postIds: [NSNumber],
         resolver: @escaping RCTPromiseResolveBlock, rejecter: @escaping RCTPromiseRejectBlock
