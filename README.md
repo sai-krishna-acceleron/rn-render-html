@@ -18,7 +18,7 @@ Pre-requisites:
 Current Project Environment:
   - MacOS Sequoia 15.6
   - ruby - v3.2.2
-  - Node - v20.15.1
+  - Node - v20.19.4
   - XCode 16.4
     - XCode Commmand line tools 16.4  
 
