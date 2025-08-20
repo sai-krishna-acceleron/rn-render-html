@@ -40,7 +40,7 @@ class ReactViewController: UIViewController {
     
     private func pickRandomTopic() -> [String: String]? {
         guard !DATA.isEmpty else { return nil }
-        let idx = 11 //Int.random(in: 0..<DATA.count)
+        let idx = Int.random(in: 0..<DATA.count)
         let dict = DATA[idx]
         let site = dict["site"] ?? ""
         let topicId = dict["topicId"] ?? ""

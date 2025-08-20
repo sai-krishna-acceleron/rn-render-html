@@ -10,9 +10,10 @@ import {
   ActivityIndicator,
   TouchableOpacity
 } from 'react-native';
-import RenderHtml from 'react-native-render-html';
 
 import PostsFetcher from './specs/NativePostsFetcher';
+import ElementClickHandler from './specs/NativeElementClickHandler';
+import RenderHtml, { MixedStyleRecord, RenderersProps, CustomTagRendererRecord, useRendererProps } from 'react-native-render-html';
 
 type AuthorParams = {
   avatar_template: string;
@@ -161,16 +162,10 @@ function HtmlRenderer({ baseDomain, topicId, postNumber }): React.JSX.Element {
     }
   }, [hasPrev, isLoadingPrev, loadPrev]);
 
-  // Retry handler
-  // const handleRetry = () => {
-  //   setError(null);
-  //   loadMore();
-  // };
-
   const TopicHeading = ({ heading_params }) => {
     // topic_title: string, post_count: number
     return (
-      <Text style={{ fontSize: 24, fontFamily: 'Sans-Serif', fontWeight: 700 }}>
+      <Text style={{ fontSize: 24, fontFamily: 'Sans-Serif', fontWeight: 800 }}>
         {heading_params.topic_title} [{heading_params.post_count}]
       </Text>
     )
@@ -218,7 +213,10 @@ function HtmlRenderer({ baseDomain, topicId, postNumber }): React.JSX.Element {
             source={{ html: each_post.cooked }}
             tagsStyles={tagsStyles}
             contentWidth={width}
-            ignoredDomTags={[]} />
+            ignoredDomTags={["svg"]}
+            renderersProps={renderersProps}
+            renderers={customRenderers}
+          />
         </View>
       </View>
     );
@@ -316,6 +314,89 @@ function HtmlRenderer({ baseDomain, topicId, postNumber }): React.JSX.Element {
   )
 }
 
+const renderersProps: Partial<RenderersProps> = {
+  a: {
+    onPress: (event, href, htmlAttribs, target) => {
+      // Check if this <a> is a lightbox (Discourse convention)
+      if (htmlAttribs.class === 'lightbox') {
+        // Handled by the custom <img> renderer.
+        return;
+      } else if (htmlAttribs.class === 'mention') {
+        // Just a user refer link
+        ElementClickHandler.onUserClicked(
+          href.split('/').pop() || '',
+          href
+        );
+      } else {
+        // Just a plain href link
+        ElementClickHandler.onLinkClicked(
+          href,
+          htmlAttribs.title || '',
+          target
+        );
+      }
+    }
+  },
+  img: {
+    enableExperimentalPercentWidth: true
+  }
+}
+
+const customRenderers: CustomTagRendererRecord = {
+  img: ({ tnode }) => {
+    const attributes = tnode.attributes;
+    const src = attributes.src;
+    const alt = attributes.alt;
+    const imgClass = attributes.class;
+
+    let height: number | undefined = undefined;
+    let width: number | undefined = undefined;
+    let isClickable: boolean = false;
+
+    switch (imgClass) {
+      case 'site-icon':
+        height = 16;
+        width = 16
+        break
+      case 'thumbnail':
+        break
+      case 'avatar':
+        width = 24;
+        height = 24;
+        break
+      case 'emoji':
+        width = 20;
+        height = 20;
+        break
+      default:
+        isClickable = true
+        break
+    }
+
+    let imageProps = {
+      source: { uri: src },
+      accessibilityLabel: alt,
+      style: { width: width || attributes.width, height: height || attributes.height },
+      resizeMode: 'contain' as const
+    };
+    const imageElement = <Image {...imageProps} />;
+
+    return isClickable ? (
+      <TouchableOpacity
+        onPress={() => {
+          ElementClickHandler.onImageClicked(
+            src,
+            alt,
+            imgClass
+          );
+          // TODO: Open native image viewer/modal here, or at least call the native layer
+        }}>
+        {imageElement}
+      </TouchableOpacity>
+    ) : imageElement;
+  }
+}
+
 const styles = StyleSheet.create({
   authorContainer: {
     flex: 1,
@@ -337,20 +418,28 @@ const styles = StyleSheet.create({
   }
 });
 
-const tagsStyles = {
-  // body: {
-  //   whiteSpace: 'normal',
-  //   color: 'gray'
-  // },
-  // a: {
-  //   color: 'green'
-  // },
+const tagsStyles: MixedStyleRecord = {
+  p: {
+    whiteSpace: 'normal',
+    fontFamily: 'Arial Blank',
+    color: 'black',
+    fontSize: 16,
+  },
+  a: {
+    color: '#56a7f7ff',
+    fontSize: 16,
+    fontFamily: 'Arial Blank',
+    textDecorationLine: 'underline',
+    fontWeight: 600
+  },
   code: {
-    fontSize: 7,
-    borderRadius: 15,
-    borderWidth: 2,
-    borderColor: 'blue',
-    backgroundColor: '#abdcca'
+    fontSize: 15,
+    borderRadius: 8,
+    borderWidth: 1,
+    fontFamily: 'Courier',
+    borderColor: '#b0b2b2ff',
+    backgroundColor: '#dbe1dfff',
+    margin: 8
   }
 };
 

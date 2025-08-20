@@ -145,5 +145,9 @@ let DATA: [[String: String]] = [
   [
     "site": "https://community.openai.com", // Code heavy
     "topicId": "163892"
+  ],
+  [
+    "site": "https://meta.discourse.org", // Link heavy
+    "topicId": "364859"
   ]
 ]
